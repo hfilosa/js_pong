@@ -61,6 +61,8 @@ function move_ball(){
     var radius=parseInt(ball.getAttribute("r"));
     var height = parseInt(canvas.getAttribute("height"));
     var width = parseInt(canvas.getAttribute("width"));
+   
+
     //Check for top & bottom wall
     if (y+radius >= height || y <= radius){
 	ball_y*=-1;
@@ -79,13 +81,23 @@ function move_ball(){
     var left_x=parseInt(left_pad.getAttribute("x"));
     var left_y=parseInt(left_pad.getAttribute("y"));
     var pad_width=parseInt(left_pad.getAttribute("width"));
-    var pad_height=parseInt(left_pad.getAttribute("height"))
+    var pad_height=parseInt(left_pad.getAttribute("height"));
+   
+    //Checks for Collision
+    var distX = Math.abs(x - (left_x+(pad_width/2)));
+    var distY = Math.abs(y - (left_y+(pad_height/2)));
+    
+    if (distX <= (radius + pad_width/2) && distY <= (radius + pad_height/2)){
+	ball_x *= -1;
+    }
+    
+    
     //Check for left paddle
     if (x-radius <= left_x+pad_width && y >= left_y+pad_height && y <= left_y)
 	ball_x*=-1;
     ball.setAttribute("cx",parseInt(ball.getAttribute("cx"))+ball_x);
     ball.setAttribute("cy",parseInt(ball.getAttribute("cy"))+ball_y);
-	
+    
 }    
 
 //Taken from https://www.kirupa.com/html5/keyboard_events_in_javascript.htm to handle simultaneus inputs
