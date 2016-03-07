@@ -5,8 +5,8 @@ document.getElementById("reset").addEventListener("click",reset);
 
 var canvas=document.getElementById("canvas");
 //Set canvas width and height to screen
-canvas.setAttribute("width",window.innerWidth-30);
-canvas.setAttribute("height",window.innerHeight-20);
+canvas.setAttribute("width",window.innerWidth*.8);
+canvas.setAttribute("height",window.innerHeight*.8);
 var left_pad=document.getElementById("left");
 var right_pad=document.getElementById("right");
 var ball=document.getElementById("ball");
@@ -81,7 +81,7 @@ function move_ball(){
     var pad_width=parseInt(left_pad.getAttribute("width"));
     var pad_height=parseInt(left_pad.getAttribute("height"))
     //Check for left paddle
-    if (x-radius <= left_x+pad_width && y-radius >= left_y+pad_height && y+radius <= left_y)
+    if (x-radius <= left_x+pad_width && y >= left_y+pad_height && y <= left_y)
 	ball_x*=-1;
     ball.setAttribute("cx",parseInt(ball.getAttribute("cx"))+ball_x);
     ball.setAttribute("cy",parseInt(ball.getAttribute("cy"))+ball_y);
