@@ -60,6 +60,8 @@ function random_neg(){
 
 //Moves ball and checks collisions
 function move_ball(){
+    ball_x = ball_x%10;
+    ball_y = ball_y%10;
     var x=parseInt(ball.getAttribute("cx"));
     var y=parseInt(ball.getAttribute("cy"));
     var radius=parseInt(ball.getAttribute("r"));
@@ -96,7 +98,7 @@ function move_ball(){
 	if (y-radius>left_y || y+radius<left_y+pad_height)
 	    ball_y *= -1.05;
 	else
-	    ball_x *= -1.3;
+	    ball_x *= -1.2;
     }
     
     //Checks for right pad Collision and increase speed
@@ -106,7 +108,7 @@ function move_ball(){
     if (distX_right <= (radius + pad_width/2) && distY_right <= (radius + pad_height/2)){
 	if (y-radius>right_y || y+radius<right_y+pad_height)
 	    ball_y *= -1.05;
-	ball_x *= -1.3;
+	ball_x *= -1.2;
     }
 
     //Move ball
@@ -114,15 +116,15 @@ function move_ball(){
     ball.setAttribute("cy",parseInt(ball.getAttribute("cy"))+ball_y);
 //Check if paddles are to be moved
     if (keys[87])
-        move_left(-3);
+        move_left(-5);
     if (keys[83])
-        move_left(3);
+        move_left(5);
     if (keys[38]){
-        move_right(-3);
+        move_right(-5);
 	e.preventDefault();
     }
     if (keys[40]){
-	move_right(3);
+	move_right(5);
 	e.preventDefault(); 
     }
 }    
