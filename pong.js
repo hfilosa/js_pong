@@ -20,6 +20,7 @@ right_pad.setAttribute("height",canvas.getAttribute("height")/5);
 
 var ball_x;
 var ball_y;
+var up;
 var ball_interval;
 
 var keys = [];
@@ -42,6 +43,9 @@ function reset(){
     //Set new ball speed
     ball_x=random_neg()*(5*Math.random() +2);
     ball_y=random_neg()*(5*Math.random() +2);
+    up=true;
+    if (ball_y >0)
+	up=false;
     //Reset the key booleans
     keys =[];
 }
@@ -49,6 +53,11 @@ function reset(){
 //Javascript can be difficult sometimes. I wish I could figure out how to get rid of this function
 function start_ball(){
     ball_interval=window.setInterval(move_ball,16)
+}
+
+//Return random number velocity multipled by sign
+function random_num(sign){
+    return ((Math.random()*5)+2)*sign;
 }
 
 function random_neg(){
@@ -60,6 +69,7 @@ function random_neg(){
 
 //Moves ball and checks collisions
 function move_ball(){
+    console.log("up: " + up);
     ball_x = ball_x%10;
     ball_y = ball_y%10;
     var x=parseInt(ball.getAttribute("cx"));
@@ -68,19 +78,24 @@ function move_ball(){
     var height = parseInt(canvas.getAttribute("height"));
     var width = parseInt(canvas.getAttribute("width"));
 
-    //Check for top & bottom wall
-    if (y+radius +ball_y >= height || y +ball_y <= radius){
-	ball_y*=-1;
-	console.log("x: "+x+" y: "+y+" r: "+radius);
+    //Check for top wall
+    if (y +ball_y <= radius && up){
+	ball_y*= -1;
+	up=false;
+    }
+    //Check for bottom wall
+    if (y+radius +ball_y >= height && !up){
+	ball_y=random_num(-1);
+	up=true;
     }
     //Check for left wall
     if (x + ball_x <= radius){
-	ball_x=(5*Math.random() +2);
+	ball_x=random_num(1);
 	p2_score.innerHTML = parseInt(p2_score.innerHTML)+1;
     }
     //Check for right wall
     if (x +radius +ball_x >= width){
-	ball_x*=-1*(5*Math.random() +2);
+	ball_x=random_num(-1);
 	p1_score.innerHTML = parseInt(p1_score.innerHTML)+1;
     }
     var left_x=parseInt(left_pad.getAttribute("x"));
@@ -95,10 +110,15 @@ function move_ball(){
     var distY_left = Math.abs(y +ball_y - (left_y+(pad_height/2)));
     
     if (distX_left <= (radius + pad_width/2) && distY_left <= (radius + pad_height/2)){
-	if (y-radius>left_y || y+radius<left_y+pad_height)
-	    ball_y *= -1.05;
-	else
-	    ball_x *= -1.2;
+	if (y-radius>left_y){
+	    ball_y = random_num(-1);
+	    up=true;
+	}
+	if (y+radius<left_y+pad_height){
+	    ball_y = random_num(1);
+	    up=false;
+	}
+	ball_x *= -1.2;
     }
     
     //Checks for right pad Collision and increase speed
