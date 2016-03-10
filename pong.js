@@ -44,8 +44,11 @@ function reset(){
     ball_x=random_neg()*(5*Math.random() +2);
     ball_y=random_neg()*(5*Math.random() +2);
     up=true;
+    left=true;
     if (ball_y >0)
 	up=false;
+    if (ball_x > 0)
+	left=false;
     //Reset the key booleans
     keys =[];
 }
@@ -68,8 +71,8 @@ function random_neg(){
 }
 
 //Moves ball and checks collisions
-function move_ball(){
-    console.log("up: " + up);
+function move_ball(e){
+    console.log("up: " + up+" left: "+left);
     ball_x = ball_x%10;
     ball_y = ball_y%10;
     var x=parseInt(ball.getAttribute("cx"));
@@ -85,16 +88,18 @@ function move_ball(){
     }
     //Check for bottom wall
     if (y+radius +ball_y >= height && !up){
-	ball_y=random_num(-1);
+	ball_y*= -1;
 	up=true;
     }
     //Check for left wall
-    if (x + ball_x <= radius){
+    if (x + ball_x <= radius && left){
+	left=false;
 	ball_x=random_num(1);
 	p2_score.innerHTML = parseInt(p2_score.innerHTML)+1;
     }
     //Check for right wall
-    if (x +radius +ball_x >= width){
+    if (x +radius +ball_x >= width && !left){
+	left=true;
 	ball_x=random_num(-1);
 	p1_score.innerHTML = parseInt(p1_score.innerHTML)+1;
     }
@@ -110,15 +115,18 @@ function move_ball(){
     var distY_left = Math.abs(y +ball_y - (left_y+(pad_height/2)));
     
     if (distX_left <= (radius + pad_width/2) && distY_left <= (radius + pad_height/2)){
-	if (y-radius>left_y){
-	    ball_y = random_num(-1);
+	if (y>left_y && !up){
+	    ball_y *= -1.1;
 	    up=true;
 	}
-	if (y+radius<left_y+pad_height){
-	    ball_y = random_num(1);
+	if (y<left_y && up){
+	    ball_y *= -1.1;
 	    up=false;
 	}
-	ball_x *= -1.2;
+	if (x>left_x && left){
+	    left = false;
+	    ball_x *= -1.2;
+	}
     }
     
     //Checks for right pad Collision and increase speed
@@ -126,9 +134,18 @@ function move_ball(){
     var distY_right = Math.abs(y +ball_y - (right_y+(pad_height/2)));
     
     if (distX_right <= (radius + pad_width/2) && distY_right <= (radius + pad_height/2)){
-	if (y-radius>right_y || y+radius<right_y+pad_height)
-	    ball_y *= -1.05;
-	ball_x *= -1.2;
+	if (y>right_y && !up){
+	    ball_y*= -1.1;
+	    up=true;
+	}
+	if (y<right_y && up){
+	    ball_y *= -1.1;
+	    up=false;
+	}
+	if (x < right_x && !left){
+	    left = true;
+	    ball_x *= -1.2;
+	}
     }
 
     //Move ball
@@ -139,14 +156,10 @@ function move_ball(){
         move_left(-5);
     if (keys[83])
         move_left(5);
-    if (keys[38]){
+    if (keys[38])
         move_right(-5);
-	e.preventDefault();
-    }
-    if (keys[40]){
+    if (keys[40])
 	move_right(5);
-	e.preventDefault(); 
-    }
 }    
 
 //Taken from https://www.kirupa.com/html5/keyboard_events_in_javascript.htm to handle simultaneus inputs
@@ -162,13 +175,11 @@ function keysPressed(e) {
 function keysReleased(e) {
     // mark keys that were released
     keys[e.keyCode] = false;
-    console.log("key releasedwww");
 }
 
 //Move left paddle by val amount
 function move_left(val){
     if (parseInt(left_pad.getAttribute("y"))+val>=0 && parseInt(left_pad.getAttribute("y"))+val+parseInt(left_pad.getAttribute("height")) <= parseInt(canvas.getAttribute("height"))){
-	console.log("Move!");
 	left_pad.setAttribute("y",parseInt(left_pad.getAttribute("y"))+val);
     }
 }
@@ -176,7 +187,6 @@ function move_left(val){
 //Move right paddle by val amount
 function move_right(val){
     if (parseInt(right_pad.getAttribute("y"))+val>=0 && parseInt(right_pad.getAttribute("y"))+val+parseInt(right_pad.getAttribute("height")) <= parseInt(canvas.getAttribute("height"))){
-	console.log("Move!");
 	right_pad.setAttribute("y",parseInt(right_pad.getAttribute("y"))+val);
     }
 }
