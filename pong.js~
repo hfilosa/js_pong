@@ -74,6 +74,12 @@ function random_neg(){
 
 //Moves ball and checks collisions
 function move_ball(e){
+    if (p1_score.innerHTML == 11)
+	reset();
+    if (p2_score.innerHTML == 11)
+	reset();
+
+
     console.log("up: " + up+" left: "+left);
     //ball_x = ball_x%10;
     //ball_y = ball_y%10;

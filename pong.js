@@ -56,7 +56,7 @@ function reset(){
 //Javascript can be difficult sometimes. I wish I could figure out how to get rid of this function
 function start_ball(){
     clearInterval(ball_interval);
-    ball_interval=window.setInterval(move_ball,16)
+    ball_interval=window.setInterval(move_ball,16);
 }
 /*
 //Return random number velocity multipled by sign
@@ -74,12 +74,9 @@ function random_neg(){
 
 //Moves ball and checks collisions
 function move_ball(e){
-    if (p1_score.innerHTML == 11)
-	reset();
-    if (p2_score.innerHTML == 11)
-	reset();
-
-
+    if (winner.innerHTML != "")
+	winner.innerHTML = "";
+       
     console.log("up: " + up+" left: "+left);
     //ball_x = ball_x%10;
     //ball_y = ball_y%10;
@@ -184,6 +181,15 @@ function move_ball(e){
         move_right(-5);
     if (keys[40])
 	move_right(5);
+
+    if (p1_score.innerHTML == 3){
+	winner.innerHTML = "Player 1 wins!";
+	reset();
+    }
+    if (p2_score.innerHTML == 3){
+	winner.innerHTML = "Player 2 wins!";
+	reset();
+    }
 }    
 
 //Taken from https://www.kirupa.com/html5/keyboard_events_in_javascript.htm to handle simultaneus inputs
