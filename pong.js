@@ -41,8 +41,8 @@ function reset(){
     p1_score.innerHTML ="0";
     p2_score.innerHTML ="0";
     //Set new ball speed
-    ball_x=random_neg()*(5*Math.random() +2);
-    ball_y=random_neg()*(5*Math.random() +2);
+    ball_x=-6;
+    ball_y=-6;
     up=true;
     left=true;
     if (ball_y >0)
@@ -55,9 +55,10 @@ function reset(){
 
 //Javascript can be difficult sometimes. I wish I could figure out how to get rid of this function
 function start_ball(){
+    clearInterval(ball_interval);
     ball_interval=window.setInterval(move_ball,16)
 }
-
+/*
 //Return random number velocity multipled by sign
 function random_num(sign){
     return ((Math.random()*5)+2)*sign;
@@ -69,12 +70,13 @@ function random_neg(){
     else
 	return 1;
 }
+*/
 
 //Moves ball and checks collisions
 function move_ball(e){
     console.log("up: " + up+" left: "+left);
-    ball_x = ball_x%10;
-    ball_y = ball_y%10;
+    //ball_x = ball_x%10;
+    //ball_y = ball_y%10;
     var x=parseInt(ball.getAttribute("cx"));
     var y=parseInt(ball.getAttribute("cy"));
     var radius=parseInt(ball.getAttribute("r"));
@@ -83,26 +85,42 @@ function move_ball(e){
 
     //Check for top wall
     if (y +ball_y <= radius && up){
-	ball_y*= -1;
+	ball_y *= -1;
 	up=false;
     }
     //Check for bottom wall
     if (y+radius +ball_y >= height && !up){
-	ball_y*= -1;
+	ball_y *= -1;
 	up=true;
     }
     //Check for left wall
     if (x + ball_x <= radius && left){
 	left=false;
-	ball_x=random_num(1);
+	ball_x=6;
 	p2_score.innerHTML = parseInt(p2_score.innerHTML)+1;
+	//original stuff
+	ball.setAttribute("cx",width/2);
+	ball.setAttribute("cy",height/2);
+	left_pad.setAttribute("y",(height/2)-(left_pad.getAttribute("height")/2));
+	right_pad.setAttribute("y",(height/2)-(right_pad.getAttribute("height")/2));
+	left_pad.setAttribute("x",20);
+	right_pad.setAttribute("x",width-20-right_pad.getAttribute("width"));
+	clearInterval(ball_interval);
     }
     //Check for right wall
     if (x +radius +ball_x >= width && !left){
 	left=true;
-	ball_x=random_num(-1);
+	ball_x=-6;
 	p1_score.innerHTML = parseInt(p1_score.innerHTML)+1;
-    }
+	//original stuff
+	ball.setAttribute("cx",width/2);
+	ball.setAttribute("cy",height/2);
+	left_pad.setAttribute("y",(height/2)-(left_pad.getAttribute("height")/2));
+	right_pad.setAttribute("y",(height/2)-(right_pad.getAttribute("height")/2));
+	left_pad.setAttribute("x",20);
+	right_pad.setAttribute("x",width-20-right_pad.getAttribute("width"));
+	clearInterval(ball_interval);
+   }
     var left_x=parseInt(left_pad.getAttribute("x"));
     var left_y=parseInt(left_pad.getAttribute("y"));
     var right_x=parseInt(right_pad.getAttribute("x"));
@@ -116,16 +134,16 @@ function move_ball(e){
     
     if (distX_left <= (radius + pad_width/2) && distY_left <= (radius + pad_height/2)){
 	if (y>left_y && !up){
-	    ball_y *= -1.1;
+	    ball_y *= -1;
 	    up=true;
 	}
 	if (y<left_y && up){
-	    ball_y *= -1.1;
+	    ball_y *= -1;
 	    up=false;
 	}
 	if (x>left_x && left){
 	    left = false;
-	    ball_x *= -1.2;
+	    ball_x *= -1;
 	}
     }
     
@@ -135,16 +153,16 @@ function move_ball(e){
     
     if (distX_right <= (radius + pad_width/2) && distY_right <= (radius + pad_height/2)){
 	if (y>right_y && !up){
-	    ball_y*= -1.1;
+	    ball_y *= -1;
 	    up=true;
 	}
 	if (y<right_y && up){
-	    ball_y *= -1.1;
+	    ball_y *= -1;
 	    up=false;
 	}
 	if (x < right_x && !left){
 	    left = true;
-	    ball_x *= -1.2;
+	    ball_x *= -1;
 	}
     }
 
