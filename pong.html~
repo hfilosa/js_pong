@@ -3,11 +3,11 @@
   <head>
     <title>PONG</title>
   </head>
-  <body>
-    <svg id="canvas" height="600" width="800" style="border: 1px solid;">
-      <circle id="ball" cx="250" cy="250" r="25" fill="black" stroke="black"/>
-      <rect id="left" x="" y="0" width="50" height="100" fill="black"/>
-      <rect id="right" x="100" y="100" width="50" height="100" fill="black"/>
+  <body bgcolor="black">
+    <svg id="canvas" height="600" width="800" style="border: 1px solid;" color="lime">
+      <circle id="ball" cx="250" cy="250" r="25" fill="black" stroke="lime"/>
+      <rect id="left" x="" y="0" width="50" height="100" fill="black" stroke="lime"/>
+      <rect id="right" x="100" y="100" width="50" height="100" fill="black" stroke="lime"/>
     </svg>
     <br>
     <table border ="1">
