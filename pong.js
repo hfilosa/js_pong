@@ -5,8 +5,8 @@ document.getElementById("reset").addEventListener("click",reset);
 
 var canvas=document.getElementById("canvas");
 //Set canvas width and height to screen
-canvas.setAttribute("width",window.innerWidth*.9);
-canvas.setAttribute("height",window.innerHeight*.8);
+canvas.setAttribute("width",window.innerWidth*.7);
+canvas.setAttribute("height",window.innerHeight*.6);
 var left_pad=document.getElementById("left");
 var right_pad=document.getElementById("right");
 var ball=document.getElementById("ball");
@@ -41,8 +41,8 @@ function reset(){
     p1_score.innerHTML ="0";
     p2_score.innerHTML ="0";
     //Set new ball speed
-    ball_x=-6;
-    ball_y=-6;
+    ball_x=-7;
+    ball_y=-7;
     up=true;
     left=true;
     if (ball_y >0)
@@ -74,8 +74,8 @@ function random_neg(){
 
 //Moves ball and checks collisions
 function move_ball(e){
-    if (winner.innerHTML != "")
-	winner.innerHTML = "";
+    if (winner.innerHTML != "First to score 5 wins")
+	winner.innerHTML = "First to score 5 wins";
        
     console.log("up: " + up+" left: "+left);
     //ball_x = ball_x%10;
@@ -108,6 +108,8 @@ function move_ball(e){
 	right_pad.setAttribute("y",(height/2)-(right_pad.getAttribute("height")/2));
 	left_pad.setAttribute("x",20);
 	right_pad.setAttribute("x",width-20-right_pad.getAttribute("width"));
+	//ball_x += -0.5;
+	//ball_y += -0.5;
 	clearInterval(ball_interval);
     }
     //Check for right wall
@@ -122,6 +124,8 @@ function move_ball(e){
 	right_pad.setAttribute("y",(height/2)-(right_pad.getAttribute("height")/2));
 	left_pad.setAttribute("x",20);
 	right_pad.setAttribute("x",width-20-right_pad.getAttribute("width"));
+	//ball_x += -0.5;
+	//ball_y += -0.5;
 	clearInterval(ball_interval);
    }
     var left_x=parseInt(left_pad.getAttribute("x"));
@@ -182,11 +186,11 @@ function move_ball(e){
     if (keys[40])
 	move_right(5);
 
-    if (p1_score.innerHTML == 3){
+    if (p1_score.innerHTML == 5){
 	winner.innerHTML = "Player 1 wins!";
 	reset();
     }
-    if (p2_score.innerHTML == 3){
+    if (p2_score.innerHTML == 5){
 	winner.innerHTML = "Player 2 wins!";
 	reset();
     }
